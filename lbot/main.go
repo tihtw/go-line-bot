@@ -1,6 +1,8 @@
 package lbot
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -30,7 +32,7 @@ type content struct {
 	parsedCreatedTime *time.Time
 
 	// Array of user who will receive the message.
-	To []String
+	To []string
 	// Type of user who will receive the message. (1: To user )
 	ToType int
 	// Detailed information about the message
@@ -66,13 +68,14 @@ type Request struct {
 	Result []Result `json:result`
 }
 
-func ParseRequest(r *http.Request) error {
+func ParseRequest(r *http.Request) (*Request, error) {
 	result := Request{}
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	json.Unmarshal(data, &result)
+	return &result, nil
 }
 
 // checkSignature reports whether messageMAC is a valid HMAC tag for message.
