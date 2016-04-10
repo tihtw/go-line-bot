@@ -1,6 +1,7 @@
 package lbot
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 	"testing"
@@ -212,4 +213,21 @@ func TestParseOperationRequest(t *testing.T) {
 
 	// fmt.Printf("%s\n", out)
 
+}
+
+func TestMarshalRequest(t *testing.T) {
+	var payload Request
+	payload.SetDefaults()
+	payload.SetText("おはいよ")
+	payload.AddTargetUser("mid")
+
+	out, err := json.Marshal(payload)
+	if err != nil {
+		t.Error(err)
+	}
+	var target = `{"to":["mid"],"toChannel":1383378250,"eventType":"138311608800106203","content":{"contentType":1,"toType":1,"text":"おはいよ"}}`
+
+	if target != string(out) {
+		t.Errorf("Result mismatch, expected %v, actual %v\n", target, string(out))
+	}
 }

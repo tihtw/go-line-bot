@@ -5,8 +5,9 @@ import (
 )
 
 const (
-	EventMessage   = eventString("138311609000106303")
-	EventOperation = eventString("138311609100106403")
+	EventSendMessage = eventString("138311608800106203")
+	EventMessage     = eventString("138311609000106303")
+	EventOperation   = eventString("138311609100106403")
 
 	TextMessage     = 1
 	ImageMessage    = 2
