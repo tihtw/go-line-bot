@@ -39,7 +39,7 @@ func (b *Bot) SendTextMessage(mid, s string) error {
 		return err
 	}
 
-	req.Header.Set("Content-type", "application/json;charset=UTF-8]")
+	req.Header.Set("Content-type", "application/json; charset=UTF-8")
 	req.Header.Set("X-Line-ChannelID", b.config.ChannelID)
 	req.Header.Set("X-Line-ChannelSecret", b.config.ChannelSecret)
 	req.Header.Set("X-Line-Trusted-User-With-ACL", b.config.MID)
