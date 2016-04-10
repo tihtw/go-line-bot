@@ -1,5 +1,9 @@
 package lbot
 
+import (
+	"errors"
+)
+
 const (
 	EventMessage   = eventString("138311609000106303")
 	EventOperation = eventString("138311609100106403")
@@ -14,4 +18,12 @@ const (
 
 	OpAddedFriend = 4
 	OpBlocked     = 8
+
+	ToTypeUser = 1
+
+	DefaultToChannel = 1383378250
+)
+
+var (
+	ErrUserExceed = errors.New("User exceed limition")
 )
