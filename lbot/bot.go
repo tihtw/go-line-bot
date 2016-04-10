@@ -1,6 +1,7 @@
 package lbot
 
 import (
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"log"
@@ -25,7 +26,12 @@ func (b *Bot) SendTextMessage(mid, s string) error {
 	payload.SetText(s)
 	payload.AddTargetUser(mid)
 
-	req, err := http.NewRequest("POST", b.config.ServerHost+"/v1/events", strings.NewReader(string(payload)))
+	out, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("POST", b.config.ServerHost+"/v1/events", strings.NewReader(string(out)))
 	if err != nil {
 		return err
 	}
