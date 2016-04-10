@@ -3,6 +3,7 @@ package lbot
 import (
 	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -14,6 +15,9 @@ func (b *Bot) SetConfig(c Config) {
 func (b *Bot) SendTextMessage(mid, s string) error {
 	if b.config == nil {
 		return errors.New("Config have not been set")
+	}
+	if b.config.Debug {
+		log.Println("Start to Set Message")
 	}
 
 	var payload Request
@@ -34,9 +38,13 @@ func (b *Bot) SendTextMessage(mid, s string) error {
 	if err != nil {
 		return err
 	}
-	_, err = ioutil.ReadAll(resp.Body)
+	result, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
+	}
+
+	if b.config.Debug {
+		log.Println("Result: ", string(result))
 	}
 
 	return nil

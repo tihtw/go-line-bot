@@ -6,6 +6,7 @@ type Config struct {
 	ChannelSecret string
 	MID           string
 	ServerHost    string
+	Debug         bool
 }
 
 const (
@@ -14,6 +15,7 @@ const (
 
 func (c *Config) SetDefaults() {
 	c.ServerHost = DefaultServerHost
+	c.Debug = false
 }
 
 func NewConfig() *Config {
