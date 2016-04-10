@@ -18,6 +18,10 @@ type mid string
 
 type eventString string
 
+type Location struct {
+	Title string `json:title`
+}
+
 // When a user sends a message, the following data is sent to your server from the LINE platform.
 type content struct {
 
@@ -32,18 +36,17 @@ type content struct {
 	parsedCreatedTime *time.Time
 
 	// Array of user who will receive the message.
-	To []string
+	To []string `json:to`
 	// Type of user who will receive the message. (1: To user )
-	ToType int
+	ToType int `json:toType`
 	// Detailed information about the message
 	// ContentMetadata
 
 	// Posted text to be delivered. Note: users can send a message which has max 10,000 characters.
-	Text string
+	Text string `json:text`
 
 	// Location data. This property is defined if the text message sent contains location data.
-	// Location
-
+	Location *Location `json:location`
 }
 
 type Result struct {
@@ -54,13 +57,13 @@ type Result struct {
 	// MID value granted by the BOT API server’s Channel
 	To []mid `json:to`
 	// Channel ID of the BOT API server
-	ToChannel string `json:toChannel`
+	ToChannel int `json:toChannel`
 	// Identifier used to show the type of data
 	EventType eventString `json:eventType`
 	// ID string to identify each event
 	Id string `json:id`
 	// Actual data relayed by the message
-	Content []content `json:content`
+	Content content `json:content`
 }
 
 // Return object for Callback Request
@@ -75,7 +78,10 @@ func ParseRequest(r *http.Request) (*CallbackRequest, error) {
 	if err != nil {
 		return nil, err
 	}
-	json.Unmarshal(data, &result)
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 

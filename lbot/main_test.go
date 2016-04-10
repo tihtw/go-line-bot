@@ -33,6 +33,8 @@ func TestParseRequest(t *testing.T) {
     }
   }
 ]}`
+
+	// payload = `null`
 	req, _ := http.NewRequest("POST", "", strings.NewReader(string(payload)))
 	req.Header.Add("Content-Type", "application/json;charset=UTF-8")
 	req.Header.Add("User-Agent", "ChannelEventDispatcher/1.0")
@@ -40,6 +42,7 @@ func TestParseRequest(t *testing.T) {
 	actual, err := ParseRequest(req)
 	if err != nil {
 		t.Error(err)
+		t.FailNow()
 	}
 	if actual.Result == nil {
 		t.Error("Result == nil")
@@ -51,6 +54,24 @@ func TestParseRequest(t *testing.T) {
 
 	if actual.Result[0].From != "u2ddf2eb3c959e561f6c9fa2ea732e7eb8" {
 		t.Error("actual.Result[0].From != u2ddf2eb3c959e561f6c9fa2ea732e7eb8")
+	}
+
+	if actual.Result[0].Content.Location != nil {
+		t.Error("actual.Result[0].Content.Location != nil")
+	}
+
+	if actual.Result[0].Content.Id != "325708" {
+		t.Error("actual.Result[0].Content.Id != 325708")
+	}
+
+	if actual.Result[0].Content.ContentType != 1 {
+		t.Errorf("actual.Result[0].Content.ContentType != %v", 1)
+	}
+	if actual.Result[0].Content.From != "uff2aec188e58752ee1fb0f9507c6529a" {
+		t.Errorf("actual.Result[0].Content.From != %v", "uff2aec188e58752ee1fb0f9507c6529a")
+	}
+	if actual.Result[0].Content.Text != "Hello, BOT API Server!" {
+		t.Errorf("actual.Result[0].Content.Text != %v", "Hello, BOT API Server!")
 	}
 
 	// fmt.Printf("%s\n", out)
