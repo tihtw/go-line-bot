@@ -63,13 +63,14 @@ type Result struct {
 	Content []content `json:content`
 }
 
-type Request struct {
+// Return object for Callback Request
+type CallbackRequest struct {
 	vaild  bool
 	Result []Result `json:result`
 }
 
-func ParseRequest(r *http.Request) (*Request, error) {
-	result := Request{}
+func ParseRequest(r *http.Request) (*CallbackRequest, error) {
+	result := CallbackRequest{}
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return nil, err
