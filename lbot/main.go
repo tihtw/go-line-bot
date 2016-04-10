@@ -73,11 +73,11 @@ type Result struct {
 	// Fixed value "u2ddf2eb3c959e561f6c9fa2ea732e7eb8"
 	From string `json:from`
 	// Fixed value "1341301815"
-	FromChannel string `json:fromChannel`
+	FromChannel json.Number `json:"fromChannel"`
 	// MID value granted by the BOT API server’s Channel
 	To []mid `json:to`
 	// Channel ID of the BOT API server
-	ToChannel int `json:toChannel`
+	ToChannel json.Number `json:toChannel`
 	// Identifier used to show the type of data
 	EventType eventString `json:eventType`
 	// ID string to identify each event
@@ -89,9 +89,9 @@ type Result struct {
 type Request struct {
 
 	// Array of target user. Max count: 150.
-	To []string `to`
+	To []string `json:to`
 	// 1383378250 Fixed value
-	ToChannel int `toChannel`
+	ToChannel int `json:toChannel`
 	// "138311608800106203" Fixed value.
 	EventType eventString `json:eventType`
 	// Object that contains the message (varies according to message type).
