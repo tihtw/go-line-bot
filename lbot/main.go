@@ -23,7 +23,7 @@ type Location struct {
 }
 
 // When a user sends a message, the following data is sent to your server from the LINE platform.
-type content struct {
+type Message struct {
 
 	// Identifier of the message.
 	Id string `json:id`
@@ -49,6 +49,22 @@ type content struct {
 	Location *Location `json:location`
 }
 
+// The LINE platform sends operation requests to your BOT API server when users perform actions such as adding your official account as friend.
+type Operation struct {
+
+	// Revision number of operation
+	Revision int `json:revision`
+	// Type of operation
+	OpType int `json:opType`
+	// Array of MIDs
+	Params []*string `json:params`
+}
+
+type Content struct {
+	Message
+	Operation
+}
+
 type Result struct {
 	// Fixed value "u2ddf2eb3c959e561f6c9fa2ea732e7eb8"
 	From string `json:from`
@@ -63,7 +79,7 @@ type Result struct {
 	// ID string to identify each event
 	Id string `json:id`
 	// Actual data relayed by the message
-	Content content `json:content`
+	Content Content `json:content`
 }
 
 // Return object for Callback Request

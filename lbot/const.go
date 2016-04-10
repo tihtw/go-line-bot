@@ -11,4 +11,7 @@ const (
 	LocationMessage = 7
 	StickerMessage  = 8
 	ContactMessage  = 10
+
+	OpAddedFriend = 4
+	OpBlocked     = 8
 )
