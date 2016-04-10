@@ -30,11 +30,15 @@ func (b *Bot) SendTextMessage(mid, s string) error {
 	if err != nil {
 		return err
 	}
+	if b.config.Debug {
+		log.Println("Output json: " + string(out))
+	}
 
 	req, err := http.NewRequest("POST", b.config.ServerHost+"/v1/events", strings.NewReader(string(out)))
 	if err != nil {
 		return err
 	}
+
 	req.Header.Set("Content-type", "application/json;charset=UTF-8]")
 	req.Header.Set("X-Line-ChannelID", b.config.ChannelID)
 	req.Header.Set("X-Line-ChannelSecret", b.config.ChannelSecret)
