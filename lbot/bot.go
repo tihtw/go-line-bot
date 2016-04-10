@@ -25,7 +25,7 @@ func (b *Bot) SendTextMessage(mid, s string) error {
 	payload.SetText(s)
 	payload.AddTargetUser(mid)
 
-	req, err := http.NewRequest("POST", b.config.ServerHost+"/1/events", strings.NewReader(string(s)))
+	req, err := http.NewRequest("POST", b.config.ServerHost+"/v1/events", strings.NewReader(string(s)))
 	if err != nil {
 		return err
 	}
