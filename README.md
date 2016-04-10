@@ -1,5 +1,5 @@
 # go-line-bot
-Go Line Bot, not official
+Golang Line Bot, not official
 
 This is a LINE BOT library in golang.
 
