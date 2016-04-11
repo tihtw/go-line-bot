@@ -23,7 +23,8 @@ type mid string
 type eventString string
 
 type Location struct {
-	Title string `json:"title"`
+	Title   string `json:"title"`
+	Address string `json:"Address"`
 }
 
 // When a user sends a message, the following data is sent to your server from the LINE platform.
