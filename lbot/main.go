@@ -41,7 +41,7 @@ type Message struct {
 	parsedCreatedTime *time.Time
 
 	// Array of user who will receive the message.
-	To []string `json:"to,omitempty"`
+	To []mid `json:"to,omitempty"`
 	// Type of user who will receive the message. (1: To user )
 	ToType int `json:"toType,omitempty"`
 	// Detailed information about the message
@@ -90,7 +90,7 @@ type Result struct {
 type Request struct {
 
 	// Array of target user. Max count: 150.
-	To []string `json:"to"`
+	To []mid `json:"to"`
 	// 1383378250 Fixed value
 	ToChannel int `json:"toChannel"`
 	// "138311608800106203" Fixed value.
@@ -105,6 +105,22 @@ type CallbackRequest struct {
 	Result []Result `json:"result"`
 }
 
+type UserProfileResponse struct {
+	// contacts
+	Contacts []ProfileInfo `json:"contacts"`
+	Count    int           `json:"count"`
+	Total    int           `json:"total"`
+	Start    int           `json:"start"`
+	Display  int           `json:"display"`
+}
+
+type ProfileInfo struct {
+	DisplayName   string `json:"displayName"`
+	MID           mid    `json:"mid"`
+	pictureUrl    string `json:"pictureUrl"`
+	statusMessage string `json:"statusMessage"`
+}
+
 func ParseRequest(r *http.Request) (*CallbackRequest, error) {
 	result := CallbackRequest{}
 	data, err := ioutil.ReadAll(r.Body)
@@ -116,6 +132,20 @@ func ParseRequest(r *http.Request) (*CallbackRequest, error) {
 		return nil, err
 	}
 	return &result, nil
+}
+
+func ParseProfileResponse(r *http.Response) (*UserProfileResponse, error) {
+	result := UserProfileResponse{}
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+
 }
 
 // checkSignature reports whether messageMAC is a valid HMAC tag for message.
@@ -132,11 +162,11 @@ func (r *Request) SetDefaults() {
 	r.EventType = EventSendMessage
 }
 
-func (r *Request) AddTargetUser(mid string) error {
+func (r *Request) AddTargetUser(m mid) error {
 	if len(r.To) >= 150 {
 		return ErrUserExceed
 	}
-	r.To = append(r.To, mid)
+	r.To = append(r.To, m)
 	return nil
 }
 

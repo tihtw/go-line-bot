@@ -2,7 +2,11 @@ package lbot
 
 import (
 	"encoding/json"
+	"fmt"
+	// "io/ioutil"
+	"log"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 )
@@ -230,4 +234,66 @@ func TestMarshalRequest(t *testing.T) {
 	if target != string(out) {
 		t.Errorf("Result mismatch, expected %v, actual %v\n", target, string(out))
 	}
+}
+
+func TestParseProfile(t *testing.T) {
+	payload := `{
+    "contacts": [
+        {
+            "displayName": "BOT API",
+            "mid": "u0047556f2e40dba2456887320ba7c76d",
+            "pictureUrl": "http://dl.profile.line.naver.jp/abcdefghijklmn",
+            "statusMessage": "Hello, LINE!"
+        }
+    ],
+    "count": 1,
+    "display": 1,
+    "pagingRequest": {
+        "display": 1,
+        "sortBy": "MID",
+        "start": 1
+    },
+    "start": 1,
+    "total": 1
+}`
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, payload)
+	}))
+	defer ts.Close()
+
+	res, err := http.Get(ts.URL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	actual, err := ParseProfileResponse(res)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if actual.Count != 1 {
+		t.Errorf("actual.Count!= %v", 1)
+	}
+	if actual.Display != 1 {
+		t.Errorf("actual.Display!= %v", 1)
+	}
+	if actual.Start != 1 {
+		t.Errorf("actual.Start!= %v", 1)
+	}
+
+	if actual.Total != 1 {
+		t.Errorf("actual.Total!= %v", 1)
+	}
+
+	if len(actual.Contacts) != 1 {
+		t.Errorf("len(actual.Contacts) != %v", 1)
+	}
+
+	if actual.Contacts[0].MID != "u0047556f2e40dba2456887320ba7c76d" {
+		t.Errorf("actual.Contacts[0].MID != %v", "u0047556f2e40dba2456887320ba7c76d")
+	}
+
+	// fmt.Printf("%v", actual)
+
 }
