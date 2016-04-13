@@ -23,10 +23,10 @@ type mid string
 type eventString string
 
 type Location struct {
-	Title     string `json:"title"`
-	Address   string `json:"Address,omitempty"`
-	Latitude  string `json:"latitude"`
-	Longitude string `json:"longitude"`
+	Title     string  `json:"title"`
+	Address   string  `json:"Address,omitempty"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
 }
 
 type imageContent struct {
