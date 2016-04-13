@@ -1,13 +1,8 @@
 # go-line-bot
 Golang Line Bot, not official
 
-This is a LINE BOT library in golang.
+## Usage
 
-You can find this library in other language.
-* PHP: https://github.com/iiyuda7/lineapi
-* Python: https://github.com/gakutarou/linebotapi_python
-* Python: https://github.com/budanthara/LINE-ChatBot
-* Node.js: https://github.com/3846masa/node-linebot
+go get github.com/tihtw/go-line-bot/lbot
 
-The structure of this package has reference above mentioned packages, thanks for their contribute.
 
