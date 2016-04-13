@@ -35,7 +35,7 @@ type Message struct {
 	// A numeric value indicating the type of message sent.
 	ContentType int `json:"contentType,omitempty"`
 	// MID of the user who sent the message.
-	From string `json:"from,omitempty"`
+	From mid `json:"from,omitempty"`
 	// Time and date request created. Displayed as the amount of time passed since 0:00:00 on January 1, 1970. The unit is given in milliseconds.
 	CreatedTime       int `json:"createdTime,omitempty"`
 	parsedCreatedTime *time.Time
