@@ -56,7 +56,7 @@ func (b *Bot) SendTextMessage(m mid, s string) error {
 	return nil
 }
 
-func (b *Bot) GetUserProfile(m mid) ([]UserProfileResponse, error) {
+func (b *Bot) GetUserProfile(m mid) ([]ProfileInfo, error) {
 	if b.config == nil {
 		return nil, errors.New("Config have not been set")
 	}
