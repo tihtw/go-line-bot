@@ -23,8 +23,27 @@ type mid string
 type eventString string
 
 type Location struct {
-	Title   string `json:"title"`
-	Address string `json:"Address"`
+	Title     string `json:"title"`
+	Address   string `json:"Address,omitempty"`
+	Latitude  string `json:"latitude"`
+	Longitude string `json:"longitude"`
+}
+
+type imageContent struct {
+	OriginalContentUrl string `json:"originalContentUrl,omitempty"`
+	PreviewImageUrl    string `json:"previewImageUrl,omitempty"`
+}
+
+type contentMetadata struct {
+	Stkid    string `json:"STKID"`
+	Stkpkgid string `json:"STKPKGID"`
+	Stkver   string `json:"Stkver"`
+}
+
+type Sticker struct {
+	Stkid    string
+	Stkpkgid string
+	Stkver   string
 }
 
 // When a user sends a message, the following data is sent to your server from the LINE platform.
@@ -45,11 +64,11 @@ type Message struct {
 	// Type of user who will receive the message. (1: To user )
 	ToType int `json:"toType,omitempty"`
 	// Detailed information about the message
-	// ContentMetadata
+	ContentMetadata *contentMetadata `json:"contentMetadata,omitempty"`
 
 	// Posted text to be delivered. Note: users can send a message which has max 10,000 characters.
 	Text string `json:"text,omitempty"`
-
+	imageContent
 	// Location data. This property is defined if the text message sent contains location data.
 	Location *Location `json:"location,omitempty"`
 }
@@ -174,5 +193,51 @@ func (r *Request) SetText(text string) error {
 	r.Content.ToType = ToTypeUser
 	r.Content.ContentType = TextMessage
 	r.Content.Text = text
+	return nil
+}
+
+func (r *Request) SetImage(originalContentUrl, previewImageUrl string) error {
+	r.Content.ToType = ToTypeUser
+	r.Content.ContentType = ImageMessage
+	r.Content.OriginalContentUrl = originalContentUrl
+	r.Content.PreviewImageUrl = previewImageUrl
+	return nil
+}
+
+func (r *Request) SetVideo(originalContentUrl, previewImageUrl string) error {
+	r.Content.ToType = ToTypeUser
+	r.Content.ContentType = VideoMessage
+	r.Content.OriginalContentUrl = originalContentUrl
+	r.Content.PreviewImageUrl = previewImageUrl
+	return nil
+}
+
+func (r *Request) SetAudio(originalContentUrl, previewImageUrl string) error {
+	r.Content.ToType = ToTypeUser
+	r.Content.ContentType = AudioMessage
+	r.Content.OriginalContentUrl = originalContentUrl
+	r.Content.PreviewImageUrl = previewImageUrl
+	return nil
+}
+
+func (r *Request) SetLocation(text, title string, latitude, longitude string) error {
+	r.Content.ToType = ToTypeUser
+	r.Content.ContentType = LocationMessage
+	r.Content.Text = text
+	r.Content.Location = new(Location)
+	r.Content.Location.Title = title
+	r.Content.Location.Latitude = latitude
+	r.Content.Location.Longitude = longitude
+	return nil
+}
+
+func (r *Request) SetSticker(s *Sticker) error {
+	r.Content.ToType = ToTypeUser
+	r.Content.ContentType = StickerMessage
+
+	r.Content.ContentMetadata = new(contentMetadata)
+	r.Content.ContentMetadata.Stkid = s.Stkid
+	r.Content.ContentMetadata.Stkpkgid = s.Stkpkgid
+	r.Content.ContentMetadata.Stkver = s.Stkver
 	return nil
 }

@@ -56,6 +56,49 @@ func (b *Bot) SendTextMessage(m mid, s string) error {
 	return nil
 }
 
+func (b *Bot) SendImageMessage(m mid, originalContentUrl, previewImageUrl string) error {
+	if b.config == nil {
+		return errors.New("Config have not been set")
+	}
+	if b.config.Debug {
+		log.Println("Start to Set Message")
+	}
+
+	var payload Request
+	payload.SetDefaults()
+	payload.SetImage(originalContentUrl, previewImageUrl)
+	payload.AddTargetUser(mid(m))
+
+	out, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+	if b.config.Debug {
+		log.Println("Output json: " + string(out))
+	}
+
+	req, err := http.NewRequest("POST", b.config.ServerHost+"/v1/events", strings.NewReader(string(out)))
+	if err != nil {
+		return err
+	}
+
+	b.addAuthHeader(req)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	result, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if b.config.Debug {
+		log.Println("Result: ", string(result))
+	}
+
+	return nil
+}
+
 func (b *Bot) GetUserProfile(m mid) ([]ProfileInfo, error) {
 	if b.config == nil {
 		return nil, errors.New("Config have not been set")

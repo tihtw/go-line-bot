@@ -294,6 +294,40 @@ func TestParseProfile(t *testing.T) {
 		t.Errorf("actual.Contacts[0].MID != %v", "u0047556f2e40dba2456887320ba7c76d")
 	}
 
-	// fmt.Printf("%v", actual)
+}
+
+func TestSetText(t *testing.T) {
+	var r Request
+	r.SetText("text")
+	if r.Content.ToType != ToTypeUser {
+		t.Errorf("r.Content.ToType != %v\n", ToTypeUser)
+	}
+	if r.Content.ContentType != TextMessage {
+		t.Errorf("r.Content.ContentType != %v\n", TextMessage)
+	}
+
+	if r.Content.Text != "text" {
+		t.Errorf("r.Content.Text != %v\n", "text")
+	}
+
+}
+
+func TestSetImage(t *testing.T) {
+	var r Request
+	r.SetImage("originalContentUrl", "previewImageUrl")
+	if r.Content.ToType != ToTypeUser {
+		t.Errorf("r.Content.ToType != %v\n", ToTypeUser)
+	}
+	if r.Content.ContentType != ImageMessage {
+		t.Errorf("r.Content.ContentType != %v\n", ImageMessage)
+	}
+
+	if r.Content.OriginalContentUrl != "originalContentUrl" {
+		t.Errorf("r.Content.OriginalContentUrl != %v\n", "originalContentUrl")
+	}
+
+	if r.Content.PreviewImageUrl != "previewImageUrl" {
+		t.Errorf("r.Content.PreviewImageUrl != %v\n", "previewImageUrl")
+	}
 
 }
