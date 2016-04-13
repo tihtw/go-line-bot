@@ -72,7 +72,7 @@ type Content struct {
 
 type Result struct {
 	// Fixed value "u2ddf2eb3c959e561f6c9fa2ea732e7eb8"
-	From string `json:from`
+	From mid `json:from`
 	// Fixed value "1341301815"
 	FromChannel json.Number `json:"fromChannel"`
 	// MID value granted by the BOT API server’s Channel
