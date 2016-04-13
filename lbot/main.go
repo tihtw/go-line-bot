@@ -220,7 +220,7 @@ func (r *Request) SetAudio(originalContentUrl, previewImageUrl string) error {
 	return nil
 }
 
-func (r *Request) SetLocation(text, title string, latitude, longitude string) error {
+func (r *Request) SetLocation(text, title string, latitude, longitude float64) error {
 	r.Content.ToType = ToTypeUser
 	r.Content.ContentType = LocationMessage
 	r.Content.Text = text
