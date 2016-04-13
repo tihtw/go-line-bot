@@ -80,11 +80,7 @@ func (b *Bot) GetUserProfile(m mid) ([]ProfileInfo, error) {
 		return nil, err
 	}
 
-	if b.config.Debug {
-		log.Println("Result: ", string(result))
-	}
-
-	return result, nil
+	return result.Contacts, nil
 
 }
 
