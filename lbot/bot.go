@@ -75,7 +75,7 @@ func (b *Bot) GetUserProfile(m mid) ([]ProfileInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	result, err := ioutil.ReadAll(resp.Body)
+	result, err := ParseProfileResponse(resp)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (b *Bot) GetUserProfile(m mid) ([]ProfileInfo, error) {
 		log.Println("Result: ", string(result))
 	}
 
-	return nil, nil
+	return result, nil
 
 }
 
